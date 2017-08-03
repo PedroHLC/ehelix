@@ -11,5 +11,9 @@ defmodule EHelixWeb.Socket do
     {:ok, socket}
   end
 
+  def broadcast(socket, event, data \\ %{}) do
+    EHelixWeb.Endpoint.broadcast(id(socket), event, data)
+  end
+
   def id(_socket), do: "socket"
 end

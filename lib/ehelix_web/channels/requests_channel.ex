@@ -7,11 +7,15 @@ defmodule EHelixWeb.RequestsChannel do
 
   def handle_in("account.logout", _, socket) do
     Emulator.requests(:logout)
-    EHelixWeb.Endpoint.broadcast("socket", "disconnect", %{})
+    EHelixWeb.Socket.broadcast(socket, "disconnect")
     {:stop, :shutdown, socket}
   end
 
-  def handle_in(any, params, socket) do
+  def handle_in(_, _, socket) do
     {:noreply, socket}
+  end
+
+  defp notify(data) do
+    EHelixWeb.Endpoint.broadcast("requests", "event", data)
   end
 end
