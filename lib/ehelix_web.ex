@@ -4,13 +4,13 @@ defmodule EHelixWeb do
       use Phoenix.Controller, namespace: EHelixWeb
       import Plug.Conn
       import EHelixWeb.Router.Helpers
-      alias EHelix.Emulator
+      alias EHelix.Emulator, as: Emulator
     end
   end
 
   def view do
     quote do
-      alias EHelix.Emulator
+      alias EHelix.Emulator, as: Emulator
     end
   end
 
@@ -19,15 +19,14 @@ defmodule EHelixWeb do
       use Phoenix.Router
       import Plug.Conn
       import Phoenix.Controller
-      alias EHelix.Emulator
+      alias EHelix.Emulator, as: Emulator
     end
   end
 
   def channel do
     quote do
       use Phoenix.Channel
-      import EHelixWeb.Gettext
-      alias EHelix.Emulator
+      alias EHelix.Emulator, as: Emulator
     end
   end
 

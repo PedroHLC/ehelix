@@ -1,4 +1,4 @@
-defmodule EHelixWeb.UserSocket do
+defmodule EHelixWeb.Socket do
   use Phoenix.Socket
 
   channel "account:*", EHelixWeb.AccountChannel
@@ -11,5 +11,5 @@ defmodule EHelixWeb.UserSocket do
     {:ok, socket}
   end
 
-  def id(_socket), do: nil
+  def id(_socket), do: "socket"
 end

@@ -1,7 +1,7 @@
 defmodule EHelixWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :ehelix
 
-  socket "/", EHelixWeb.UserSocket
+  socket "/", EHelixWeb.Socket
 
   plug Corsica,
     origins: ~r/http?.*localhost*/,

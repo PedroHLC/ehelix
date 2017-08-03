@@ -1,7 +1,7 @@
 defmodule EHelixWeb.AccountChannel do
-  use Phoenix.Channel
+  use EHelixWeb, :channel
 
-  def join("account:" <> id, _message, socket) do
+  def join("account:" <> _, _message, socket) do
     {:ok, socket}
   end
 end
