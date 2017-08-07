@@ -9,8 +9,9 @@ defmodule EHelixWeb.AccountChannel do
         send(pid, :shutdown)
     end
 
-    pid = spawn_link(fn -> notify_loop(id) end)
-    Emulator.notifier(pid)
+    # uncomment these lines to add an event reporter
+    # pid = spawn_link(fn -> notify_loop(id) end)
+    # Emulator.notifier(pid)
 
     {:ok, socket}
   end
