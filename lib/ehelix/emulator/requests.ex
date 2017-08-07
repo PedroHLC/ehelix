@@ -1,15 +1,15 @@
 defmodule EHelix.Emulator.Requests do
   def handle_request(:logout, state) do
-    pid = state.account.notifier
+    pid = state.notifier
 
     if pid do
-      send(pid,  :shutdown)
+      send(pid, :shutdown)
     end
 
     {:disconnect, state}
   end
 
   def handle_request(_, state) do
-    {%{}, state}
+    {{:error, :notfound}, state}
   end
 end

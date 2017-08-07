@@ -24,6 +24,14 @@ defmodule EHelix.Emulator do
     do_request(:sign_up)
   end
 
+  def notifier(pid) do
+    do_request({:notifier, pid})
+  end
+
+  def notifier?() do
+    do_request(:notifier?)
+  end
+
   def logged? do
     do_request(:logged?)
   end
@@ -40,12 +48,14 @@ defmodule EHelix.Emulator do
     do_request({:server, info})
   end
 
-  # genserver
+  # gen server
 
   def init(_) do
     state =
       %{
+        notifier: nil,
         login: false,
+        first: true,
         account: Account.initial_model,
         server: Server.initial_model
       }
@@ -61,12 +71,24 @@ defmodule EHelix.Emulator do
   # requests
 
   def handle_request(:login, state) do
-    {%{state | login: true}, state}
+    response = state.first
+    state = %{state | login: true, first: false, notifier: nil}
+    {response, state}
   end
 
   def handle_request(:sign_up, state) do
-    {%{}, state}
+    {:ok, state}
   end
+
+  def handle_request({:notifier, pid}, state) do
+    state = %{state | notifier: pid}
+    {:ok, state}
+  end
+
+  def handle_request(:notifier?, state) do
+    {state.notifier, state}
+  end
+
 
   def handle_request(:logged?, state) do
     %{login: login} = state
