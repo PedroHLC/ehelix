@@ -1,55 +1,31 @@
 defmodule EHelixWeb.AccountChannel do
   use EHelixWeb, :channel
 
-  def join("account:" <> id, _message, socket) do
-    case Emulator.notifier? do
-      nil ->
-        nil
-      pid ->
-        send(pid, :shutdown)
-    end
-
-    # uncomment these lines to add an event reporter
-    # pid = spawn_link(fn -> notify_loop(id) end)
-    # Emulator.notifier(pid)
-
+  def join("account:" <> _, _message, socket) do
     {:ok, socket}
   end
 
-  defp notify(id, data) do
-    EHelixWeb.Endpoint.broadcast("account:" <> id, "event", data)
-  end
-
   def handle_in("account.bootstrap", _, socket) do
-    data = Emulator.account(:bootstrap)
-    reply =
-      %{
-        data: data,
-      }
+    state = Emulator.get
 
-    {:reply, {:ok, reply}, socket}
+    response =
+      %{
+        data:
+          %{
+            account: %{},
+            meta: %{},
+            servers:
+              state.servers
+          }
+      }
+    {:reply, {:ok, response}, socket}
   end
 
   def handle_in(_, _, socket) do
     {:noreply, socket}
   end
 
-  defp notify_loop(id) do
-    receive do
-      :shutdown ->
-        :ok
-    after
-      3_000 ->
-        event =
-          %{
-            event:
-              "ping",
-            data:
-              %{ hello: "word" }
-            }
-
-        notify(id, event)
-        notify_loop(id)
-    end
+  defp notify(id, data) do
+    EHelixWeb.Endpoint.broadcast("account:" <> id, "event", data)
   end
 end

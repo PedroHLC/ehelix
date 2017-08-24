@@ -6,11 +6,9 @@ defmodule EHelixWeb.PageController do
   end
 
   def login(conn, _params) do
-    first = Emulator.login()
-
     response =
       %{
-        first_time: first,
+        first_time: is_nil(Emulator.get()),
         token: "$$TOKEN$$",
         account_id: "$$ID$$"
       }
@@ -19,7 +17,6 @@ defmodule EHelixWeb.PageController do
   end
 
   def sign_up(conn, _params) do
-    Emulator.sign_up()
     json conn, %{}
   end
 end
