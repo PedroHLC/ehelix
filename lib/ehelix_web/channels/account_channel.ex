@@ -12,7 +12,8 @@ defmodule EHelixWeb.AccountChannel do
       %{
         data:
           %{
-            account: %{},
+            account:
+              state.account,
             meta: %{},
             servers:
               state.servers
