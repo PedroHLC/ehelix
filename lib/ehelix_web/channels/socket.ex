@@ -30,6 +30,7 @@ defmodule EHelixWeb.Socket do
             name: "Test",
             coordinates: 0.0,
             nip: ["::", "1.2.3.4"],
+            nips: [["::", "1.2.3.4"]],
             logs:
               [
                 log(:rand.uniform(10000), "131agdgd313", "loadgadgdagdgg3"),
@@ -45,6 +46,7 @@ defmodule EHelixWeb.Socket do
             name: "Testfaf",
             coordinates: 0.0,
             nip: ["::", "5.6.7.7"],
+            nips: [["::", "5.6.7.7"]],
             logs:
               [
                 log(:rand.uniform(10000), "131313", "loadgg3"),
@@ -165,7 +167,12 @@ defmodule EHelixWeb.Socket do
           ]
         }
       },
-      inventory: %{}
+      inventory: %{
+        i001: %{
+          type: "ram",
+          size: 512000000
+        }
+      }
     }
   end
 end
