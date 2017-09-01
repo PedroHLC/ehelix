@@ -24,40 +24,45 @@ defmodule EHelixWeb.Socket do
         %{},
 
       servers:
-        [
-          %{
-            id: "gate1",
-            name: "Test",
-            coordinates: 0.0,
-            nip: ["::", "1.2.3.4"],
-            nips: [["::", "1.2.3.4"]],
-            logs:
-              [
-                log(:rand.uniform(10000), "131agdgd313", "loadgadgdagdgg3"),
-                log(:rand.uniform(10000), "w413agdag531", "adgdadagad"),
-                log(:rand.uniform(10000), "adgvxvad", "logagagagagxgad4")
-              ],
-            tunnels: [],
-            filesystem: default_filesystem(),
-            processes: %{}
-          },
-          %{
-            id: "gate2",
-            name: "Testfaf",
-            coordinates: 0.0,
-            nip: ["::", "5.6.7.7"],
-            nips: [["::", "5.6.7.7"]],
-            logs:
-              [
-                log(:rand.uniform(10000), "131313", "loadgg3"),
-                log(:rand.uniform(10000), "w413531", "loagadgg4"),
-                log(:rand.uniform(10000), "2423315135", "logagagad4")
-              ],
-            tunnels: [],
-            filesystem: default_filesystem(),
-            processes: %{}
-          }
-        ]
+        %{
+          gateways:
+            [
+              %{
+                id: "gate1",
+                name: "Test",
+                nips: [["::", "1.2.3.4"]],
+                coordinates: 0.0,
+                logs:
+                  [
+                    log(:rand.uniform(10000), "131agdgd313", "loadgadgdagdgg3"),
+                    log(:rand.uniform(10000), "w413agdag531", "adgdadagad"),
+                    log(:rand.uniform(10000), "adgvxvad", "logagagagagxgad4")
+                  ],
+                tunnels: [],
+                filesystem: default_filesystem(),
+                processes: %{},
+                endpoints: []
+              },
+              %{
+                id: "gate2",
+                name: "Testfaf",
+                coordinates: 0.0,
+                nips: [["::", "5.6.7.7"]],
+                logs:
+                  [
+                    log(:rand.uniform(10000), "131313", "loadgg3"),
+                    log(:rand.uniform(10000), "w413531", "loagadgg4"),
+                    log(:rand.uniform(10000), "2423315135", "logagagad4")
+                  ],
+                tunnels: [],
+                filesystem: default_filesystem(),
+                processes: %{},
+                endpoints: []
+              }
+            ],
+          endpoints:
+            []
+        }
     }
   end
 
