@@ -1,6 +1,8 @@
 defmodule EHelixWeb.ServerChannel do
   use EHelixWeb, :channel
 
+  alias EHelix.Helpers, as: Helpers
+
   def join("server:" <> id, _message, socket) do
     state =
       Emulator.get()
@@ -28,8 +30,56 @@ defmodule EHelixWeb.ServerChannel do
     {:ok, socket}
   end
 
+  def handle_in("server.bootstrap", _, socket) do
+    %{
+      id: "ip",
+      name: "Testfaf",
+      coordinates: 0.0,
+      nips: [["::", "5.6.7.7"]],
+      logs:
+        [
+          Helpers.log(:rand.uniform(10000), "131313", "loadgg3"),
+          Helpers.log(:rand.uniform(10000), "w413531", "loagadgg4"),
+          Helpers.log(:rand.uniform(10000), "2423315135", "logagagad4")
+        ],
+      tunnels: [],
+      filesystem: Helpers.default_filesystem(),
+      processes: %{}
+    }
+  end
+
+
   def handle_in("file.index", _, socket) do
     {:reply, {:ok, %{data: []}}, socket}
+  end
+
+  def handle_in("network.browse", _, socket) do
+    response =
+      %{
+        type: "vpc_noweb",
+        meta: %{
+          password: "",
+          nip: ["network", "ip"]
+        },
+        content: %{}
+      }
+
+    {:reply, {:ok, %{ data: response}}, socket}
+  end
+
+
+  def handle_in("network.browse", _, socket) do
+    response =
+      %{
+        type: "vpc_noweb",
+        meta: %{
+          password: "",
+          nip: ["network", "ip"]
+        },
+        content: %{}
+      }
+
+    {:reply, {:ok, %{ data: response}}, socket}
   end
 
   def handle_in("log.index", _, socket) do
