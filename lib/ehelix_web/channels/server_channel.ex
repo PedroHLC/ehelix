@@ -30,8 +30,64 @@ defmodule EHelixWeb.ServerChannel do
     {:ok, socket}
   end
 
-  def handle_in("server.bootstrap", _, socket) do
-    %{
+  def handle_in("bruteforce", _, socket) do
+    data = %{
+      type: "Cracker",
+      access: %{
+        origin_id: "who knows",
+        priority: 3,
+        usage: %{
+          cpu: %{
+            percentage: 0.1,
+            absolute: 0.1
+          },
+          mem: %{
+            percentage: 0.1,
+            absolute: 0.1
+          },
+          down: %{
+            percentage: 0.1,
+            absolute: 0.1
+          },
+          up: %{
+            percentage: 0.1,
+            absolute: 0.1
+          }
+        },
+        connection_id: "who knows"
+      },
+      state: "running",
+      file: %{
+        id: "who knows",
+        version: 0.0,
+        name: "Who knows"
+      },
+      progress: %{
+        creation_date: 0.0,
+        percentage: 0.5,
+        completion_date: 0.4
+      },
+      network_id: "who knows",
+      target_ip: "who knows",
+      process_id: "who knows"
+    }
+
+    spawn(fn ->
+      msg = %{
+        event: "processes.conclusion",
+        data: %{
+          process_id: "who knows"
+        }
+      }
+      :timer.sleep(1000)
+      notify(socket.topic, msg)
+    end)
+
+    {:reply, {:ok, %{data: data}}, socket}
+  end
+
+  def handle_in("bootstrap", _, socket) do
+    data = %{
       id: "ip",
       name: "Testfaf",
       coordinates: 0.0,
@@ -46,6 +102,8 @@ defmodule EHelixWeb.ServerChannel do
       filesystem: Helpers.default_filesystem(),
       processes: %{}
     }
+
+    {:reply, {:ok, %{data: data}}, socket}
   end
 
 
@@ -53,30 +111,17 @@ defmodule EHelixWeb.ServerChannel do
     {:reply, {:ok, %{data: []}}, socket}
   end
 
-  def handle_in("network.browse", _, socket) do
+  def handle_in("browse", _, socket) do
     response =
       %{
-        type: "vpc_noweb",
+        type: "npc_download_center",
         meta: %{
           password: "",
           nip: ["network", "ip"]
         },
-        content: %{}
-      }
-
-    {:reply, {:ok, %{ data: response}}, socket}
-  end
-
-
-  def handle_in("network.browse", _, socket) do
-    response =
-      %{
-        type: "vpc_noweb",
-        meta: %{
-          password: "",
-          nip: ["network", "ip"]
-        },
-        content: %{}
+        content: %{
+          title: "example"
+        }
       }
 
     {:reply, {:ok, %{ data: response}}, socket}
@@ -107,7 +152,7 @@ defmodule EHelixWeb.ServerChannel do
   end
 
   defp notify(id, data) do
-    EHelixWeb.Endpoint.broadcast("server:" <> id, "event", data)
+    EHelixWeb.Endpoint.broadcast(id, "event", data)
   end
 
   defp notify_loop(id) do
