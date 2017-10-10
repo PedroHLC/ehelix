@@ -47,12 +47,12 @@ defmodule EHelixWeb.ServerChannel do
     }
   end
 
-  def bootstrap("1.2.3.4") do
+  def bootstrap("ip") do
     %{
       data: %{
         name: "Testfaf",
         coordinates: 0.0,
-        nips: [["::", "1.2.3.4"]],
+        nips: [["::", "ip"]],
         logs:
           [
             Helpers.log(:rand.uniform(10000), "131313", "loadgg3"),
