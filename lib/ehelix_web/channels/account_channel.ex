@@ -3,64 +3,49 @@ defmodule EHelixWeb.AccountChannel do
 
   alias EHelix.Helpers, as: Helpers
 
+  def bootstrap do
+    state = Emulator.get
+
+    %{
+      data:
+        %{
+          account:
+            state.account,
+          meta: %{},
+          servers:
+            %{
+              player:
+                [
+                  %{
+                    server_id: "gate1",
+                    network_id: "::",
+                    ip: "192.168.0.1"
+                  },
+                  %{
+                    server_id: "gate2",
+                    network_id: "::",
+                    ip: "127.0.0.1"
+                  }
+                ],
+              remote:
+                [
+                  %{
+                    password: "asdfasdf",
+                    network_id: "::",
+                    ip: "8.8.8.8"
+                  }
+                ]
+            }
+        }
+    }
+  end
+
   def join("account:" <> _, _message, socket) do
-    {:ok, socket}
+    {:ok, bootstrap(), socket}
   end
 
   def handle_in("bootstrap", _, socket) do
-    state = Emulator.get
-
-    response =
-      %{
-        data:
-          %{
-            account:
-              state.account,
-            meta: %{},
-            servers:
-              %{
-                player:
-                  [
-                    %{
-                      server_id: "gate1",
-                      name: "Test",
-                      nips: [["::", "1.2.3.4"]],
-                      coordinates: 0.0,
-                      # logs:
-                      #   [
-                      #     Helpers.log(:rand.uniform(10000), "131agdgd313", "loadgadgdagdgg3"),
-                      #     Helpers.log(:rand.uniform(10000), " w413agdag531", "adgdadagad"),
-                      #     Helpers.log(:rand.uniform(10000), "adgvxvad", "logagagagagxgad4")
-                      #   ],
-                      # tunnels: [],
-                      # filesystem: Helpers.default_filesystem(),
-                      # processes: %{},
-                      endpoints: []
-                    },
-                    %{
-                      server_id: "gate2",
-                      name: "Testfaf",
-                      nips: [["::", "5.6.7.7"]],
-                      coordinates: 0.0,
-                      # logs:
-                      #   [
-                      #     Helpers.log(:rand.uniform(10000), "131313", "loadgg3"),
-                      #     Helpers.log(:rand.uniform(10000), "w413531", "loagadgg4"),
-                      #     Helpers.log(:rand.uniform(10000), "2423315135", "logagagad4")
-                      #   ],
-                      # tunnels: [],
-                      # filesystem: Helpers.default_filesystem(),
-                      # processes: %{},
-                      endpoints: []
-                    }
-                  ],
-                remotes:
-                  []
-              }
-          }
-      }
-
-    {:reply, {:ok, response}, socket}
+    {:reply, {:ok, bootstrap()}, socket}
   end
 
   def handle_in(_, _, socket) do

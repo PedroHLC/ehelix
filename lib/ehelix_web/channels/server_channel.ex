@@ -3,7 +3,72 @@ defmodule EHelixWeb.ServerChannel do
 
   alias EHelix.Helpers, as: Helpers
 
-  def join("server:" <> id, _message, socket) do
+  def bootstrap("192.168.0.1") do
+    %{
+      data: %{
+        id: "gate1",
+        name: "Test",
+        nips: [["::", "192.168.0.1"]],
+        coordinates: 0.0,
+        endpoints: []
+      }
+    }
+  end
+
+  def bootstrap("127.0.0.1") do
+    %{
+      data: %{
+        id: "gate2",
+        name: "Test",
+        nips: [["::", "192.168.0.1"]],
+        coordinates: 0.0,
+        endpoints: []
+      }
+    }
+  end
+
+  def bootstrap("8.8.8.8") do
+    %{
+      data: %{
+        id: "remote1",
+        name: "Test",
+        nips: [["::", "8.8.8.8"]],
+        coordinates: 0.0,
+        logs:
+          [
+            Helpers.log(:rand.uniform(10000), "131313", "loadgg3"),
+            Helpers.log(:rand.uniform(10000), "w413531", "loagadgg4"),
+            Helpers.log(:rand.uniform(10000), "2423315135", "logagagad4")
+          ],
+        tunnels: [],
+        filesystem: Helpers.default_filesystem(),
+        processes: %{}
+      }
+    }
+  end
+
+  def bootstrap("1.2.3.4") do
+    %{
+      data: %{
+        name: "Testfaf",
+        coordinates: 0.0,
+        nips: [["::", "1.2.3.4"]],
+        logs:
+          [
+            Helpers.log(:rand.uniform(10000), "131313", "loadgg3"),
+            Helpers.log(:rand.uniform(10000), "w413531", "loagadgg4"),
+            Helpers.log(:rand.uniform(10000), "2423315135", "logagagad4")
+          ],
+        tunnels: [],
+        filesystem: Helpers.default_filesystem(),
+        processes: %{}
+      }
+    }
+  end
+
+  def join("server:" <> topic, _message, socket) do
+    [network_id, network_ip] = String.split(topic, "@", parts: 2)
+
     state =
       Emulator.get()
 
@@ -11,23 +76,23 @@ defmodule EHelixWeb.ServerChannel do
       Map.get(state, :pids, %{})
 
     pid =
-      case Map.get(pids, id) do
+      case Map.get(pids, topic) do
         nil ->
-          spawn_link(fn -> notify_loop(id) end)
+          spawn_link(fn -> notify_loop(topic) end)
         pid ->
           send(pid, {:shutdown, pid})
-          spawn_link(fn -> notify_loop(id) end)
+          spawn_link(fn -> notify_loop(topic) end)
       end
 
     pids =
-      Map.put(pids, id, pid)
+      Map.put(pids, topic, pid)
 
     state =
       Map.put(state, :pids, pids)
 
     Emulator.set(state)
 
-    {:ok, socket}
+    {:ok, bootstrap(network_ip), socket}
   end
 
   def handle_in("bruteforce", _, socket) do
@@ -87,23 +152,7 @@ defmodule EHelixWeb.ServerChannel do
   end
 
   def handle_in("bootstrap", _, socket) do
-    data = %{
-      id: "ip",
-      name: "Testfaf",
-      coordinates: 0.0,
-      nips: [["::", "5.6.7.7"]],
-      logs:
-        [
-          Helpers.log(:rand.uniform(10000), "131313", "loadgg3"),
-          Helpers.log(:rand.uniform(10000), "w413531", "loagadgg4"),
-          Helpers.log(:rand.uniform(10000), "2423315135", "logagagad4")
-        ],
-      tunnels: [],
-      filesystem: Helpers.default_filesystem(),
-      processes: %{}
-    }
-
-    {:reply, {:ok, %{data: data}}, socket}
+    {:reply, {:ok, bootstrap("1.2.3.4")}, socket}
   end
 
 
