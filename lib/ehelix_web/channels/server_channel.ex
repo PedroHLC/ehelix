@@ -166,7 +166,7 @@ defmodule EHelixWeb.ServerChannel do
         type: "npc_download_center",
         meta: %{
           password: "",
-          nip: ["network", "ip"]
+          nip: ["::", "ip"]
         },
         content: %{
           title: "example"
