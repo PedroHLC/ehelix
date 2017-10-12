@@ -166,7 +166,17 @@ defmodule EHelixWeb.ServerChannel do
         type: "npc_download_center",
         meta: %{
           password: "",
-          nip: ["::", "ip"]
+          nip: ["::", "ip"],
+          public: [ %{
+              id: "somefile",
+              name: "ILikeIceCream",
+              extension: "exe",
+              type: "cracker",
+              modules: [ %{
+                module: "overflow",
+                version: 4
+              }]
+            } ]
         },
         content: %{
           title: "example"
