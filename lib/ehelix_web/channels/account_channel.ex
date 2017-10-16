@@ -24,7 +24,7 @@ defmodule EHelixWeb.AccountChannel do
                   %{
                     server_id: "gate2",
                     network_id: "::",
-                    ip: "127.0.0.1"
+                    ip: "192.168.0.2"
                   }
                 ],
               remote:

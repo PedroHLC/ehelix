@@ -7,7 +7,7 @@ defmodule EHelixWeb.ServerChannel do
     %{
       data: %{
         id: "gate1",
-        name: "Test",
+        name: "Test 1",
         nips: [["::", "192.168.0.1"]],
         coordinates: 0.0,
         endpoints: []
@@ -15,12 +15,12 @@ defmodule EHelixWeb.ServerChannel do
     }
   end
 
-  def bootstrap("127.0.0.1") do
+  def bootstrap("192.168.0.2") do
     %{
       data: %{
         id: "gate2",
-        name: "Test",
-        nips: [["::", "192.168.0.1"]],
+        name: "Test 2",
+        nips: [["::", "192.168.0.2"]],
         coordinates: 0.0,
         endpoints: []
       }
@@ -47,12 +47,12 @@ defmodule EHelixWeb.ServerChannel do
     }
   end
 
-  def bootstrap("ip") do
+  def bootstrap("8.8.4.4") do
     %{
       data: %{
         name: "Testfaf",
         coordinates: 0.0,
-        nips: [["::", "ip"]],
+        nips: [["::", "8.8.4.4"]],
         logs:
           [
             Helpers.log(:rand.uniform(10000), "131313", "loadgg3"),
@@ -160,20 +160,28 @@ defmodule EHelixWeb.ServerChannel do
     {:reply, {:ok, %{data: []}}, socket}
   end
 
+  def handle_in("file.download", _, socket) do
+    {:reply, {:error, %{message: "download_self"}}, socket}
+  end
+
+  def handle_in("pftp.file.download", _, socket) do
+    {:reply, {:error, %{message: "download_self"}}, socket}
+  end
+
   def handle_in("browse", _, socket) do
     response =
       %{
         type: "npc_download_center",
         meta: %{
           password: "",
-          nip: ["::", "ip"],
+          nip: ["::", "8.8.4.4"],
           public: [ %{
               id: "somefile",
               name: "ILikeIceCream",
               extension: "exe",
               type: "cracker",
               modules: [ %{
-                module: "overflow",
+                name: "overflow",
                 version: 4
               }]
             } ]
